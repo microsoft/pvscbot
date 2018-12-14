@@ -1,6 +1,7 @@
 import enum
 
 
+@enum.unique
 class Status(enum.Enum):
     classify = "classify"
     triage = "triage"
@@ -10,3 +11,8 @@ class Status(enum.Enum):
     needs_spec = "needs spec"
     needs_upstream_fix = "needs upstream fix"
     validate_fix = "validate fix"
+
+
+@enum.unique
+class Skip(enum.Enum):
+    news = "skip news"
