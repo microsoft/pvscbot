@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "runFunctionsHost",
+      "type": "shell",
+      "osx": {
+        "command": ". ${config:azureFunctions.pythonVenv}\\bin\\activate && func extensions install && pip install -r requirements.txt && func host start"
+      },
+      "windows": {
+        "command": "${config:azureFunctions.pythonVenv}\\Scripts\\activate ; func extensions install ; pip install -r requirements.txt ; func host start"
+      },
+      "linux": {
+        "command": ". ${config:azureFunctions.pythonVenv}\\bin\\activate && func extensions install && pip install -r requirements.txt && func host start"
+      },
+      "isBackground": true,
+      "options": {
+        "env": {
+          "languageWorkers__python__arguments": "-m ptvsd --host 127.0.0.1 --port 9091"
+        }
+      },
+      "problemMatcher": "$func-watch"
+    },
+    {
+      "label": "funcPack",
+      "type": "shell",
+      "osx": {
+        "command": ". ${config:azureFunctions.pythonVenv}\\bin\\activate && func pack"
+      },
+      "windows": {
+        "command": "${config:azureFunctions.pythonVenv}\\Scripts\\activate ; func pack"
+      },
+      "linux": {
+        "command": ". ${config:azureFunctions.pythonVenv}\\bin\\activate && func pack"
+      },
+      "isBackground": true
+    }
+  ]
+}
