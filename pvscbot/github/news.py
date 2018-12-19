@@ -53,7 +53,7 @@ async def PR_files(event, gh):
 
 async def check_for_news_file(event, gh, *args, **kwargs):
     async for path in PR_files(event, gh):
-        if NEWS_PATH.matches(path):
+        if NEWS_PATH.match(path):
             await status(event, gh, Status.success, "news entry file found")
             return True
     else:

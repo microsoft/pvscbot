@@ -10,12 +10,17 @@ from . import samples
 
 
 class FakeGH:
-    def __init__(self):
+    def __init__(self, *, getiter_=[]):
         self.post_ = []
+        self.getiter_ = getiter_
 
     async def post(self, url, url_vars={}, *, data):
         post_url = gidgethub.sansio.format_url(url, url_vars)
         self.post_.append((post_url, data))
+
+    async def getiter(self, url):
+        for item in self.getiter_:
+            yield item
 
 
 @pytest.mark.asyncio
@@ -86,8 +91,25 @@ async def test_check_for_skip_news_removed(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_check_for_news_file():
-    # XXX proper file
+async def test_check_for_news_file(monkeypatch):
+    status_args = None
+
+    async def status(*args):
+        nonlocal status_args
+        status_args = args
+
+    monkeypatch.setattr(news, "status", status)
+    event_data = json.loads(
+        importlib_resources.read_text(samples, "pull_request-reopened-skip_news.json")
+    )
+    event = gidgethub.sansio.Event(event_data, event="pull_request", delivery_id="1")
+    files_data = json.loads(
+        importlib_resources.read_text(samples, "pull_request-files.json")
+    )
+    gh = FakeGH(getiter_=files_data)
+    assert await news.check_for_news_file(event, gh)
+    assert status_args[2] == news.Status.success
+
     # XXX File in wrong subdirectory
     # XXX File in news/ only
     # XXX Mis-named file
