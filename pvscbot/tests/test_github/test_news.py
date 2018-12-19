@@ -159,12 +159,39 @@ async def test_check_for_news(monkeypatch):
     assert status_args[2] == news.Status.failure
 
 
+# Also tests that the status check is initially set to "pending".
 @pytest.mark.asyncio
-async def test_routing():
-    # XXX label added
-    # XXX label removed
-    # XXX opened w/ label
-    # XXX opened w/ file
-    # XXX reopend
-    # XXX syncrhonized
+@pytest.mark.params("action", ["opened", "reopened", "synchronize"])
+async def test_PR_nonlabel_routing(action, monkeypatch):
+    status_args = None
+
+    async def status(*args):
+        nonlocal status_args
+        status_args = args
+
+    monkeypatch.setattr(news, "status", status)
+
+    async def check_for_skip_news_label(*args, **kwargs):
+        return True
+
+    monkeypatch.setattr(news, "check_for_skip_news_label", check_for_skip_news_label)
+
+    event = gidgethub.sansio.Event(
+        {"action": action}, event="pull_request", delivery_id="1"
+    )
+
+    await news.router.dispatch(event, object())
+    assert status_args is not None  # We hit the route.
+    assert status_args[2] == news.Status.pending
+
+
+@pytest.mark.asyncio
+async def test_PR_labeled_routing(action, monkeypatch):
+    # XXX
+    pass
+
+
+@pytest.mark.asyncio
+async def test_PR_unlabeled_routing(action, monkeypatch):
+    # XXX
     pass
