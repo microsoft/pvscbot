@@ -25,12 +25,9 @@ async def test_status_label_removal():
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
 
-    await closed.remove_status_labels(event, gh)
+    await closed.router.dispatch(event, gh)
     assert len(gh.called) == 1
     assert gh.called[0] == gidgethub.sansio.format_url(
         "https://api.github.com/repos/Microsoft/vscode-python/issues/3453/labels{/name}",
         {"name": "needs spec"},
     )
-
-
-# XXX Test routing; @pytest.mark.parametrize('action', ['opened', 'reopened', 'synchronize'])
