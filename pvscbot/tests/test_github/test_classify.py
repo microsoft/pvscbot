@@ -23,19 +23,20 @@ class FakeGH:
 
 
 @pytest.mark.asyncio
-async def test_new_issue_with_no_labels():
-    sample_data = json.loads(
-        importlib_resources.read_text(samples, "issues-opened.json")
-    )
+@pytest.mark.params(
+    "data_filename", ["issues-opened.json", "issues-reopened-no_labels.json"]
+)
+async def test_issue_with_no_labels(data_filename):
+    sample_data = json.loads(importlib_resources.read_text(samples, data_filename))
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
 
-    await classify.classify_new_issue(event, gh)
+    await classify.router.dispatch(event, gh)
     assert len(gh.post_) == 1
     action = gh.post_[0]
     assert (
         action[0]
-        == "https://api.github.com/repos/Microsoft/vscode-python/issues/3451/labels"
+        == f"https://api.github.com/repos/Microsoft/vscode-python/issues/{sample_data['issue']['number']}/labels"
     )
     assert action[1] == {"labels": [labels.Status.classify.value]}
 
@@ -48,7 +49,7 @@ async def test_new_issue_with_labels():
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
 
-    await classify.classify_new_issue(event, gh)
+    await classify.router.dispatch(event, gh)
     assert not len(gh.post_)
 
 
@@ -97,6 +98,3 @@ async def test_no_adding_label_on_closed_issue():
     await classify.router.dispatch(event, gh)
     assert not gh.post_
     assert not gh.delete_
-
-
-# XXX Test routing; @pytest.mark.parametrize('action', ['opened', 'reopened', 'synchronize'])
