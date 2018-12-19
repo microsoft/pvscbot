@@ -122,11 +122,41 @@ async def test_check_for_news_file(path, expected, status_check, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_check_for_news():
-    # XXX labeled
-    # XXX file
-    # XXX nothing
-    pass
+async def test_check_for_news(monkeypatch):
+    status_args = None
+
+    async def status(*args):
+        nonlocal status_args
+        status_args = args
+
+    monkeypatch.setattr(news, "status", status)
+    event_data = json.loads(
+        importlib_resources.read_text(samples, "pull_request-reopened-skip_news.json")
+    )
+    event = gidgethub.sansio.Event(event_data, event="pull_request", delivery_id="1")
+    files_data = json.loads(
+        importlib_resources.read_text(samples, "pull_request-files.json")
+    )
+    original_file_path = files_data[1]["filename"]
+    assert original_file_path == "news/3 Code Health/3684.md"
+    files_data[1]["filename"] = "README"
+    gh = FakeGH(getiter_=files_data)
+
+    assert await news.check_for_news(event, gh)
+    assert status_args[2] == news.Status.success
+
+    event_data["pull_request"]["labels"] = []
+    files_data[1]["filename"] = original_file_path
+    status_args = None
+
+    assert await news.check_for_news(event, gh)
+    assert status_args[2] == news.Status.success
+
+    files_data[1]["filename"] = "README"
+    status_args = None
+
+    assert not await news.check_for_news(event, gh)
+    assert status_args[2] == news.Status.failure
 
 
 @pytest.mark.asyncio
