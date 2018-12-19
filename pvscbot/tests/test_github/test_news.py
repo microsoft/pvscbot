@@ -186,12 +186,37 @@ async def test_PR_nonlabel_routing(action, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_PR_labeled_routing(action, monkeypatch):
-    # XXX
-    pass
+async def test_PR_labeled_routing(monkeypatch):
+    called = False
+
+    def has_label(*args, **kwargs):
+        nonlocal called
+        called = True
+        return False
+
+    monkeypatch.setattr(news, "has_label", has_label)
+    event = gidgethub.sansio.Event(
+        {"action": "labeled"}, event="pull_request", delivery_id="1"
+    )
+
+    await news.router.dispatch(event, object())
+    assert called
 
 
 @pytest.mark.asyncio
-async def test_PR_unlabeled_routing(action, monkeypatch):
-    # XXX
-    pass
+async def test_PR_unlabeled_routing(monkeypatch):
+    called = False
+
+    def changed_label_matches(*args, **kwargs):
+        nonlocal called
+        called = True
+        return False
+
+    monkeypatch.setattr(news, "changed_label_matches", changed_label_matches)
+
+    event = gidgethub.sansio.Event(
+        {"action": "unlabeled"}, event="pull_request", delivery_id="1"
+    )
+
+    await news.router.dispatch(event, object())
+    assert called
