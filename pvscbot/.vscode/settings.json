@@ -13,5 +13,11 @@
     "bin": true
   },
   "azureFunctions.pythonVenv": ".venv",
-  "debug.internalConsoleOptions": "neverOpen"
+  "debug.internalConsoleOptions": "neverOpen",
+  "python.unitTest.pyTestArgs": [
+    ".."
+  ],
+  "python.unitTest.unittestEnabled": false,
+  "python.unitTest.nosetestsEnabled": false,
+  "python.unitTest.pyTestEnabled": true
 }
