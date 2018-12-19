@@ -43,7 +43,7 @@ async def test_new_issue_with_labels():
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
 
-    await classify.add_classify_label(event, gh)
+    await classify.classify_new_issue(event, gh)
     assert not len(gh.post_)
 
 

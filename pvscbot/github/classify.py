@@ -7,7 +7,7 @@ router = gidgethub.routing.Router()
 
 @router.register("issues", action="opened")
 @router.register("issues", action="reopened")
-async def add_classify_label(event, gh, *args, **kwargs):
+async def classify_new_issue(event, gh, *args, **kwargs):
     """Add the 'classify' label.
 
     If any labels already exist then don't apply the label as that implies that
