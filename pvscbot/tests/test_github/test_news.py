@@ -91,7 +91,16 @@ async def test_check_for_skip_news_removed(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_check_for_news_file(monkeypatch):
+@pytest.mark.params(
+    "path,expected,status_check",
+    [
+        ("news/3 Code Health/3684.md", True, news.Status.success),
+        ("news/__pycache__/3684.md", False, news.Status.failure),
+        ("news/3684.md", False, news.Status.failure),
+        ("news/3 Code Health/3684.txt", False, news.Status.failure),
+    ],
+)
+async def test_check_for_news_file(path, expected, status_check, monkeypatch):
     status_args = None
 
     async def status(*args):
@@ -106,14 +115,10 @@ async def test_check_for_news_file(monkeypatch):
     files_data = json.loads(
         importlib_resources.read_text(samples, "pull_request-files.json")
     )
+    files_data[1]["filename"] = path
     gh = FakeGH(getiter_=files_data)
-    assert await news.check_for_news_file(event, gh)
-    assert status_args[2] == news.Status.success
-
-    # XXX File in wrong subdirectory
-    # XXX File in news/ only
-    # XXX Mis-named file
-    pass
+    assert await news.check_for_news_file(event, gh) == expected
+    assert status_args[2] == status_check
 
 
 @pytest.mark.asyncio
