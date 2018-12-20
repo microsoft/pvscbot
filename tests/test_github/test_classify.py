@@ -5,7 +5,7 @@ import importlib_resources
 import pytest
 
 from . import samples
-from ...github import classify, labels
+from pvscbot.github import classify, labels
 
 
 class FakeGH:

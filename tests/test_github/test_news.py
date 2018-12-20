@@ -5,7 +5,7 @@ import importlib_resources
 import pytest
 
 
-from ...github import labels, news
+from pvscbot.github import labels, news
 from . import samples
 
 

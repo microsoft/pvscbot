@@ -5,7 +5,7 @@ import importlib_resources
 import pytest
 
 from . import samples
-from ...github import closed
+from pvscbot.github import closed
 
 
 class FakeGH:

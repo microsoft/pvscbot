@@ -4,7 +4,7 @@
   "editor.formatOnSave": true,
   "python.jediEnabled": false,
   "python.unitTest.pyTestArgs": [
-    "pvscbot/tests"
+    "tests"
   ],
   "python.unitTest.unittestEnabled": false,
   "python.unitTest.nosetestsEnabled": false,
