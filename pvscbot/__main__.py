@@ -49,5 +49,5 @@ if __name__ == "__main__":
         port = int(port)
     else:
         port = 8000
-        logger.info(sorted(os.environ.keys()))
+        logging.info(sorted(os.environ.keys()))
     web.run_app(app, port=port)
