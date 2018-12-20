@@ -1,5 +1,0 @@
-azure-functions==1.0.0a5
-azure-functions-worker==1.0.0a6
-
-gidgethub~=3.0.0
-aiohttp~=3.4.4
