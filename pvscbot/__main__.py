@@ -36,7 +36,7 @@ async def main(request):
             )
         return web.Response(status=200)
     except Exception as exc:
-        traceback.print_exc(file=sys.stderr)
+        logging.exception()
         return web.Response(status=500)
 
 
