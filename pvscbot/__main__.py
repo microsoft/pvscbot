@@ -45,9 +45,4 @@ if __name__ == "__main__":
     app.router.add_get("/", hello)
     app.router.add_post("/github", main)
     port = os.environ.get("PORT")
-    if port is not None:
-        port = int(port)
-    else:
-        port = 8000
-        logging.info(sorted(os.environ.keys()))
-    web.run_app(app, port=port)
+    web.run_app(app, port=8000)
