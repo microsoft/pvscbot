@@ -24,7 +24,7 @@ async def hello(_):
 
 async def main(request):
     try:
-        body = await request.body()
+        body = await request.read()
         secret = os.environ.get("GH_SECRET")
         oauth_token = os.environ.get("GH_AUTH")
         async with aiohttp.ClientSession() as session:
