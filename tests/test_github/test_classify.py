@@ -54,6 +54,19 @@ async def test_new_issue_with_labels():
 
 
 @pytest.mark.asyncio
+async def test_adding_classify():
+    sample_data = json.loads(
+        importlib_resources.read_text(samples, "issues-labeled-classify.json")
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
+    gh = FakeGH()
+
+    await classify.router.dispatch(event, gh)
+    assert not len(gh.post_)
+    assert not len(gh.delete_)
+
+
+@pytest.mark.asyncio
 async def test_removing_classify_label():
     sample_data = json.loads(
         importlib_resources.read_text(samples, "issues-labeled-has_classify.json")

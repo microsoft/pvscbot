@@ -48,6 +48,8 @@ async def classify_new_issue(event, gh, *args, **kwargs):
 async def added_label(event, gh, *args, **kwargs):
     if not is_opened(event):
         return
+    elif event.data["label"]["name"] == labels.Status.classify.value:
+        return
     elif has_classify(event):
         await gh.delete(
             event.data["issue"]["labels_url"], {"name": labels.Status.classify.value}
