@@ -44,7 +44,11 @@ async def classify_new_issue(event, gh, *args, **kwargs):
     if issue["labels"]:
         # Teammate pre-classified the issue when creating it.
         return
-    await add_classify_label(gh, event)
+    async for _ in gh.getiter(issue["labels_url"]):
+        # A label was added since the webhook was triggered.
+        return
+    else:
+        await add_classify_label(gh, event)
 
 
 @router.register("issues", action="labeled")

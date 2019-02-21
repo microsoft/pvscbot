@@ -15,6 +15,13 @@ class FakeGH:
     def __init__(self):
         self.post_ = []
         self.delete_ = []
+        self.getiter_request = []
+        self.getiter_response = None
+
+    async def getiter(self, url, url_vars={}):
+        self.getiter_request.append(gidgethub.sansio.format_url(url, url_vars))
+        for x in self.getiter_response:
+            yield x
 
     async def post(self, url, url_vars={}, *, data):
         post_url = gidgethub.sansio.format_url(url, url_vars)
@@ -33,6 +40,7 @@ async def test_issue_with_no_labels(data_filename):
     sample_data = json.loads(importlib_resources.read_text(samples, data_filename))
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
+    gh.getiter_response = sample_data["issue"]["labels"]
 
     await classify.router.dispatch(event, gh)
     assert len(gh.post_) == 1
@@ -51,6 +59,18 @@ async def test_new_issue_with_labels():
     )
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
+
+    await classify.router.dispatch(event, gh)
+    assert not len(gh.post_)
+
+
+@pytest.mark.asyncio
+async def test_new_issue_gains_labels_while_processing():
+    webhook_data = json.loads(importlib_resources.read_text(samples, "issues-opened.json"))
+    eventual_data = json.loads(importlib_resources.read_text(samples, "issues-opened_with_labels.json"))
+    event = gidgethub.sansio.Event(webhook_data, event="issues", delivery_id="12345")
+    gh = FakeGH()
+    gh.getiter_response = eventual_data["issue"]["labels"]
 
     await classify.router.dispatch(event, gh)
     assert not len(gh.post_)
