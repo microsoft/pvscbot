@@ -1,8 +1,10 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+import http
 import json
 
+import gidgethub
 import gidgethub.sansio
 import importlib_resources
 import pytest
@@ -104,6 +106,36 @@ async def test_removing_classify_label():
         == "https://api.github.com/repos/Microsoft/vscode-python/issues/3327/labels/classify"
     )
 
+
+@pytest.mark.asyncio
+async def test_removing_missing_classify_label():
+    # Can happen if issue is updated since webhook triggered.
+    sample_data = json.loads(
+        importlib_resources.read_text(samples, "issues-labeled-has_classify.json")
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
+    class FakeGHDeleteException(FakeGH):
+        async def delete(self, url, url_vars={}):
+                raise gidgethub.BadRequest(http.HTTPStatus.BAD_REQUEST, "Label does not exist")
+    gh = FakeGHDeleteException()
+
+    await classify.router.dispatch(event, gh)
+    assert not len(gh.delete_)
+
+
+@pytest.mark.asyncio
+async def test_removing_classify_label_error():
+    sample_data = json.loads(
+        importlib_resources.read_text(samples, "issues-labeled-has_classify.json")
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
+    class FakeGHDeleteException(FakeGH):
+        async def delete(self, url, url_vars={}):
+                raise gidgethub.BadRequest(http.HTTPStatus.BAD_REQUEST, "oops")
+    gh = FakeGHDeleteException()
+
+    with pytest.raises(gidgethub.BadRequest):
+        await classify.router.dispatch(event, gh)
 
 @pytest.mark.asyncio
 async def test_adding_classify_label_again():
