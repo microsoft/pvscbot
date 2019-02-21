@@ -38,8 +38,8 @@ async def main(request):
                 gh, router, request.headers, body, secret=secret, logger=logging
             )
         return web.Response(status=200)
-    except Exception as exc:
-        logging.exception()
+    except Exception:
+        logging.exception("Unhandled exception")
         return web.Response(status=500)
 
 
