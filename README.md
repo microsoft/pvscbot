@@ -1,3 +1,66 @@
+# Purpose
+
+This bot exists to automate the development process/workflow for
+https://github.com/microsoft/vscode-python. It also acts as a simple demo of
+a GitHub bot running on Azure.
+
+This bot is what is known as an OAuth app and is not a GitHub app. The
+[differences](https://developer.github.com/apps/differences-between-apps/) come
+down to simplicity in authentication and how widely can the bot be deployed. Since
+this bot is only deployed for a single repository and the original author was
+intimately familiar with OAuth apps that was the route taken.
+
+This bot also predates [GitHub Actions](https://developer.github.com/actions/)
+being released. As such some things this bot does may be easier to do as an action.
+
+Currently the bot will do the following things for you:
+
+1. Apply the `classify` label to all new issues with no other labels.
+1. When an issue is closed, remove any status-related labels, e.g. `needs PR`
+   (with the idea that if an issue is re-opened then it needs to be re-evaluated
+   as to why the issue is still open).
+1. Require a pull request has a news file entry in `news` **or** have a `skip news`
+   label.
+
+# Deployment
+
+## Generically
+
+### On the deployment/hosting side
+
+You must set two environment variables for the bot to function:
+
+1. `GH_SECRET`: [secret between GitHub and your bot](https://developer.github.com/webhooks/securing/#setting-your-secret-token).
+1. `GH_AUTH`: [Auth token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) for the bot to make changes in your repo.
+
+The [shared secret](https://developer.github.com/webhooks/securing/#setting-your-secret-token)
+between GitHub and your bot is used to verify that the webhook payload actually
+originated from GitHub for your repository and isn't malicious. This is important
+as a malicious user could send fake webhook payloads to your bot and cause it to
+make changes on the malicious user's behalf.
+
+The [personal access token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
+is to empower your bot to make changes to your repo on your behalf. You can use
+a token from your personal GitHub account or create a fake bot account. Make sure
+the token has the following scopes/permissions:
+
+1.`repo:public_repo` (if your repo is public; adjust accordingly for your needs)
+
+### On the GitHub side
+
+When [creating the webhook](https://developer.github.com/webhooks/creating/) you
+need to specify what events to send to your endpoint. This bot supports the
+following events:
+
+1. `Issues`
+1. `Pull Requests`
+
+## Azure
+
+The bot is currently written to support
+[Azure App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro)
+on Python 3.7.
+
 
 # Contributing
 
