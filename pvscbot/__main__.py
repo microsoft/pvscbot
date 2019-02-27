@@ -47,5 +47,5 @@ if __name__ == "__main__":
     app = web.Application()
     app.router.add_get("/", hello)
     app.router.add_post("/github", main)
-    port = os.environ.get("PORT")
-    web.run_app(app, port=8000)
+    port = os.environ.get("PORT", 8000)
+    web.run_app(app, port=port)
