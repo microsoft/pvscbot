@@ -32,7 +32,7 @@ async def main(request):
         oauth_token = os.environ.get("GH_AUTH")
         async with aiohttp.ClientSession() as session:
             gh = gh_aiohttp.GitHubAPI(
-                session, "python/bedevere", oauth_token=oauth_token
+                session, "Microsoft/pvscbot", oauth_token=oauth_token
             )
             await server.serve(
                 gh, router, request.headers, body, secret=secret, logger=logging
