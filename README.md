@@ -15,7 +15,7 @@ being released. As such some things this bot does may be easier to do as an acti
 
 Currently the bot will do the following things for you:
 
-1. Apply the `classify` label to all new issues with no other labels.
+1. Add/remove the `classify` label based on whether any other status label is set.
 1. When an issue is closed, remove any status-related labels, e.g. `needs PR`
    (with the idea that if an issue is re-opened then it needs to be re-evaluated
    as to why the issue is still open).
