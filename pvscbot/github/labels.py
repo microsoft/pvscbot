@@ -12,7 +12,7 @@ class Status(enum.Enum):
     needs_PR = "needs PR"
     needs_spec = "needs spec"
     needs_upstream_fix = "needs upstream fix"
-    validate_fix = "validate fix"
+    experimenting = "experimenting"
 
 
 STATUS_LABELS = frozenset(e.value for e in Status.__members__.values())
