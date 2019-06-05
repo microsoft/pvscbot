@@ -35,7 +35,7 @@ class FakeGH:
 
 
 @pytest.mark.asyncio
-@pytest.mark.params(
+@pytest.mark.parameterize(
     "data_filename", ["issues-opened.json", "issues-reopened-no_labels.json"]
 )
 async def test_issue_with_no_labels(data_filename):

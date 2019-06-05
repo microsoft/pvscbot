@@ -1,2 +1,9 @@
-gidgethub~=3.1
-aiohttp~=3.4.4
+gidgethub
+aiohttp
+# Development
+black
+importlib_resources
+pip-tools
+pytest
+pytest-asyncio
+pytest-parawtf
