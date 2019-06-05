@@ -3,10 +3,10 @@
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
   "python.jediEnabled": false,
-  "python.unitTest.pyTestArgs": [
+  "python.testing.pyTestArgs": [
     "tests"
   ],
-  "python.unitTest.unittestEnabled": false,
-  "python.unitTest.nosetestsEnabled": false,
-  "python.unitTest.pyTestEnabled": true
+  "python.testing.unittestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pyTestEnabled": true
 }
