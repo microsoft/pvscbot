@@ -63,7 +63,7 @@ async def test_new_issue_with_labels():
     gh = FakeGH()
 
     await classify.router.dispatch(event, gh)
-    assert not len(gh.post_)
+    assert not gh.post_
 
 
 @pytest.mark.asyncio
@@ -79,7 +79,7 @@ async def test_new_issue_gains_labels_while_processing():
     gh.getiter_response = eventual_data["issue"]["labels"]
 
     await classify.router.dispatch(event, gh)
-    assert not len(gh.post_)
+    assert not gh.post_
 
 
 @pytest.mark.asyncio
@@ -91,8 +91,8 @@ async def test_adding_classify():
     gh = FakeGH()
 
     await classify.router.dispatch(event, gh)
-    assert not len(gh.post_)
-    assert not len(gh.delete_)
+    assert not gh.post_
+    assert not gh.delete_
 
 
 @pytest.mark.asyncio
@@ -142,7 +142,7 @@ async def test_removing_missing_classify_label():
     gh = FakeGHDeleteException()
 
     await classify.router.dispatch(event, gh)
-    assert not len(gh.delete_)
+    assert not gh.delete_
 
 
 @pytest.mark.asyncio
@@ -168,6 +168,22 @@ async def test_removing_classify_label_error():
 async def test_adding_classify_label_again():
     sample_data = json.loads(
         importlib_resources.read_text(samples, "issues-unlabeled-no_labels.json")
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
+    gh = FakeGH()
+
+    await classify.router.dispatch(event, gh)
+    assert len(gh.post_) == 1
+    assert gh.post_[0] == (
+        "https://api.github.com/repos/Microsoft/vscode-python/issues/3327/labels",
+        {"labels": [labels.Status.classify.value]},
+    )
+
+
+@pytest.mark.asyncio
+async def test_removing_label_no_status_left():
+    sample_data = json.loads(
+        importlib_resources.read_text(samples, "issues-unlabeled-no_status.json")
     )
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
     gh = FakeGH()

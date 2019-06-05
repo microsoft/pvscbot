@@ -70,8 +70,9 @@ async def added_label(event, gh, *args, **kwargs):
 
 
 @router.register("issues", action="unlabeled")
-async def no_labels(event, gh, *args, **kwargs):
+async def removed_label(event, gh, *args, **kwargs):
+    remaining_labels = {label["name"] for label in event.data["issue"]["labels"]}
     if not is_opened(event):
         return
-    elif not has_labels(event):
+    elif not (remaining_labels & labels.STATUS_LABELS):
         await add_classify_label(gh, event)
