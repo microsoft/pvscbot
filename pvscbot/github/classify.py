@@ -53,14 +53,16 @@ async def classify_new_issue(event, gh, *args, **kwargs):
 
 @router.register("issues", action="labeled")
 async def added_label(event, gh, *args, **kwargs):
+    added_label = event.data["label"]["name"]
     if not is_opened(event):
         return
-    elif event.data["label"]["name"] == labels.Status.classify.value:
+    elif added_label == labels.Status.classify.value:
         return
-    elif has_classify(event):
+    elif has_classify(event) and added_label in labels.STATUS_LABELS:
         try:
             await gh.delete(
-                event.data["issue"]["labels_url"], {"name": labels.Status.classify.value}
+                event.data["issue"]["labels_url"],
+                {"name": labels.Status.classify.value},
             )
         except gidgethub.BadRequest as exc:
             if not "Label does not exist" in str(exc):
