@@ -94,7 +94,7 @@ async def test_check_for_skip_news_removed(monkeypatch):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parameterize(
+@pytest.mark.parametrize(
     "path,expected,status_check",
     [
         ("news/3 Code Health/3684.md", True, news.Status.success),
@@ -164,7 +164,7 @@ async def test_check_for_news(monkeypatch):
 
 # Also tests that the status check is initially set to "pending".
 @pytest.mark.asyncio
-@pytest.mark.parameterize("action", ["opened", "reopened", "synchronize"])
+@pytest.mark.parametrize("action", ["opened", "reopened", "synchronize"])
 async def test_PR_nonlabel_routing(action, monkeypatch):
     status_args = None
 
