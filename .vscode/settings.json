@@ -3,8 +3,8 @@
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
   "python.jediEnabled": false,
-  "python.testing.pytestArgs": [
+  "python.testing.pyTestArgs": [
     "tests"
   ],
-  "python.testing.pytestEnabled": true
+  "python.testing.pyTestEnabled": true
 }
