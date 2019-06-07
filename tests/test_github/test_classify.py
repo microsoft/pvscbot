@@ -60,10 +60,12 @@ async def test_issue_with_no_labels(data_filename):
 
 
 @pytest.mark.asyncio
-async def test_new_issue_with_status_label():
-    sample_data = json.loads(
-        importlib_resources.read_text(samples, "issues-opened_with_labels.json")
-    )
+@pytest.mark.parametrize(
+    "data_filename",
+    ["issues-opened-data_science.json", "issues-opened_with_labels.json"],
+)
+async def test_new_issue_with_label(data_filename):
+    sample_data = json.loads(importlib_resources.read_text(samples, data_filename))
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="12345")
     gh = FakeGH()
 
