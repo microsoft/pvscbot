@@ -21,3 +21,9 @@ STATUS_LABELS = frozenset(e.value for e in Status.__members__.values())
 @enum.unique
 class Skip(enum.Enum):
     news = "skip news"
+
+
+@enum.unique
+class Team(enum.Enum):
+    data_science = "data science"
+    xteam = "xteam"

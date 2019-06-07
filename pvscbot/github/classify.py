@@ -41,12 +41,14 @@ async def classify_new_issue(event, gh, *args, **kwargs):
 
     """
     issue = event.data["issue"]
-    if issue["labels"]:
+    existing_labels = {label["name"] for label in issue["labels"]}
+    if existing_labels & labels.STATUS_LABELS:
         # Teammate pre-classified the issue when creating it.
         return
-    async for _ in gh.getiter(issue["labels_url"]):
-        # A label was added since the webhook was triggered.
-        return
+    async for label in gh.getiter(issue["labels_url"]):
+        if label["name"] in labels.STATUS_LABELS:
+            # Issue already has a status label.
+            return
     else:
         await add_classify_label(gh, event)
 
@@ -58,21 +60,25 @@ async def added_label(event, gh, *args, **kwargs):
         return
     elif added_label == labels.Status.classify.value:
         return
-    elif has_classify(event) and added_label in labels.STATUS_LABELS:
-        try:
-            await gh.delete(
-                event.data["issue"]["labels_url"],
-                {"name": labels.Status.classify.value},
-            )
-        except gidgethub.BadRequest as exc:
-            if not "Label does not exist" in str(exc):
-                raise
+    elif has_classify(event):
+        if (
+            added_label in labels.STATUS_LABELS
+            or added_label == labels.Team.data_science.value
+        ):
+            try:
+                await gh.delete(
+                    event.data["issue"]["labels_url"],
+                    {"name": labels.Status.classify.value},
+                )
+            except gidgethub.BadRequest as exc:
+                if not "Label does not exist" in str(exc):
+                    raise
 
 
 @router.register("issues", action="unlabeled")
 async def removed_label(event, gh, *args, **kwargs):
     remaining_labels = {label["name"] for label in event.data["issue"]["labels"]}
-    if not is_opened(event):
+    if not is_opened(event) or labels.Team.data_science.value in remaining_labels:
         return
     elif not (remaining_labels & labels.STATUS_LABELS):
         await add_classify_label(gh, event)

@@ -6,4 +6,3 @@ importlib_resources
 pip-tools
 pytest
 pytest-asyncio
-pytest-parawtf

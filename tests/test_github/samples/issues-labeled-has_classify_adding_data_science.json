@@ -1,5 +1,5 @@
 {
-    "action": "unlabeled",
+    "action": "labeled",
     "issue": {
         "url": "https://api.github.com/repos/Microsoft/vscode-python/issues/3327",
         "repository_url": "https://api.github.com/repos/Microsoft/vscode-python",
@@ -33,7 +33,20 @@
         },
         "labels": [
             {
-                "name": "data science"
+                "id": 1138174523,
+                "node_id": "MDU6TGFiZWwxMTM4MTc0NTIz",
+                "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/classify",
+                "name": "classify",
+                "color": "bbe560",
+                "default": false
+            },
+            {
+                "id": 1159648198,
+                "node_id": "MDU6TGFiZWwxMTU5NjQ4MTk4",
+                "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/external%20contributor",
+                "name": "external contributor",
+                "color": "7057ff",
+                "default": false
             }
         ],
         "state": "open",
@@ -83,18 +96,14 @@
         "milestone": null,
         "comments": 0,
         "created_at": "2018-11-13T21:40:36Z",
-        "updated_at": "2018-12-19T22:12:05Z",
-        "closed_at": "2018-12-19T22:06:56Z",
+        "updated_at": "2018-12-19T21:56:50Z",
+        "closed_at": null,
         "author_association": "MEMBER",
         "body": "In order of broad usage -- data science team is taking a \"wait and see\" approach to this -- and ease of implementation:\r\n\r\n- [ ] Respond to a ping event\r\n- [ ] Label new issues with `classify`\r\n- [ ] Strip all irrelevant labels from closed issues\r\n- [ ] Add a news entry status check\r\n- [ ] When labelled `triage`, randomly assign issue to someone on the team\r\n- [ ] When `triage` label removed then also remove assignee\r\n- [ ] When a PR has been merged, mark as `validate fix`\r\n- [ ] Once a `feature`, `type`, and appropriate `needs` label is set on an issue then remove `triage` label\r\n- [ ] When an issue is assigned to someone and labelled `needs PR` then change to `in progress`\r\n- [ ] When an issue is marked as `in progress`, make sure it is assigned to the current milestone (and add the `unplanned` label if it isn't)\r\n- [ ] When an issue marked as `in progress` is unassigned, mark as `needs PR`\r\n- [ ] When a PR is opened, mark issue as `review`\r\n- [ ] When an external contributor opens a PR, mark the PR and related issue as `external contributor` (might need to get issue # from initial message in case they don't have a news entry yet; also be ready to have to pick up on message edits)\r\n- [ ] When an external contributor opens a PR, leave a comment thanking them and saying we should get to it no later than during our next sprint\r\n- [ ] When an external contributor opens a PR, add to the next sprint\r\n- [ ] When an issue is closed but not merged, update the related issue accordingly\r\n- [ ] When an issue is closed as fixed that was opened by someone other than a team member, add a comment about testing the fix\r\n\r\nUnder consideration:\r\n- When an issue is labelled `info needed`, remove that label when the person who was requested to provide more info has replied (i.e. when a comment says \"Question for @...\", then remove `info needed` when \"@...\" replies)\r\n- When an issue is marked as `needs upstream fix` for language server or ptvsd, create a matching issue in the appropriate issue tracker, leave a comment about the matching issue, and then lock the issue here\r\n- When a referenced issue for the language server or ptvsd is closed, close the matching issue here\r\n- Check for a copyright header for new files created by team members"
     },
     "label": {
-        "id": 1159648198,
-        "node_id": "MDU6TGFiZWwxMTU5NjQ4MTk4",
-        "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/external%20contributor",
-        "name": "classify",
-        "color": "7057ff",
-        "default": false
+        "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/triage",
+        "name": "data science"
     },
     "repository": {
         "id": 106462765,
@@ -164,7 +173,7 @@
         "deployments_url": "https://api.github.com/repos/Microsoft/vscode-python/deployments",
         "created_at": "2017-10-10T19:37:29Z",
         "updated_at": "2018-12-19T18:19:31Z",
-        "pushed_at": "2018-12-19T21:58:38Z",
+        "pushed_at": "2018-12-19T21:56:06Z",
         "git_url": "git://github.com/Microsoft/vscode-python.git",
         "ssh_url": "git@github.com:Microsoft/vscode-python.git",
         "clone_url": "https://github.com/Microsoft/vscode-python.git",

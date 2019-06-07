@@ -35,8 +35,13 @@ class FakeGH:
 
 
 @pytest.mark.asyncio
-@pytest.mark.parameterize(
-    "data_filename", ["issues-opened.json", "issues-reopened-no_labels.json"]
+@pytest.mark.parametrize(
+    "data_filename",
+    [
+        "issues-opened.json",
+        "issues-reopened-no_labels.json",
+        "issues-opened-labels_but_no_status.json",
+    ],
 )
 async def test_issue_with_no_labels(data_filename):
     sample_data = json.loads(importlib_resources.read_text(samples, data_filename))
@@ -55,7 +60,7 @@ async def test_issue_with_no_labels(data_filename):
 
 
 @pytest.mark.asyncio
-async def test_new_issue_with_labels():
+async def test_new_issue_with_status_label():
     sample_data = json.loads(
         importlib_resources.read_text(samples, "issues-opened_with_labels.json")
     )
@@ -67,7 +72,7 @@ async def test_new_issue_with_labels():
 
 
 @pytest.mark.asyncio
-async def test_new_issue_gains_labels_while_processing():
+async def test_new_issue_gains_status_label_while_processing():
     webhook_data = json.loads(
         importlib_resources.read_text(samples, "issues-opened.json")
     )
@@ -80,6 +85,26 @@ async def test_new_issue_gains_labels_while_processing():
 
     await classify.router.dispatch(event, gh)
     assert not gh.post_
+
+
+@pytest.mark.asyncio
+async def test_new_issue_gains_no_status_label_while_processing():
+    webhook_data = json.loads(
+        importlib_resources.read_text(samples, "issues-opened.json")
+    )
+    eventual_data = json.loads(
+        importlib_resources.read_text(
+            samples, "issues-opened-labels_but_no_status.json"
+        )
+    )
+    event = gidgethub.sansio.Event(webhook_data, event="issues", delivery_id="12345")
+    gh = FakeGH()
+    gh.getiter_response = eventual_data["issue"]["labels"]
+
+    await classify.router.dispatch(event, gh)
+    assert len(gh.post_) == 1
+    action = gh.post_[0]
+    assert action[1] == {"labels": [labels.Status.classify.value]}
 
 
 @pytest.mark.asyncio
@@ -100,6 +125,24 @@ async def test_removing_classify_label():
     sample_data = json.loads(
         importlib_resources.read_text(
             samples, "issues-labeled-has_classify_adding_triage.json"
+        )
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
+    gh = FakeGH()
+
+    await classify.router.dispatch(event, gh)
+    assert len(gh.delete_) == 1
+    assert (
+        gh.delete_[0]
+        == "https://api.github.com/repos/Microsoft/vscode-python/issues/3327/labels/classify"
+    )
+
+
+@pytest.mark.asyncio
+async def test_removing_classify_label_for_data_science():
+    sample_data = json.loads(
+        importlib_resources.read_text(
+            samples, "issues-labeled-has_classify_adding_data_science.json"
         )
     )
     event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
@@ -198,6 +241,21 @@ async def test_removing_label_no_status_left():
 
 @pytest.mark.asyncio
 async def test_no_adding_label_on_closed_issue():
+    sample_data = json.loads(
+        importlib_resources.read_text(
+            samples, "issues-unlabeled-closed_with_no_labels.json"
+        )
+    )
+    event = gidgethub.sansio.Event(sample_data, event="issues", delivery_id="1")
+    gh = FakeGH()
+
+    await classify.router.dispatch(event, gh)
+    assert not gh.post_
+    assert not gh.delete_
+
+
+@pytest.mark.asyncio
+async def test_no_adding_label_for_data_science_on_label_removal():
     sample_data = json.loads(
         importlib_resources.read_text(
             samples, "issues-unlabeled-closed_with_no_labels.json"
