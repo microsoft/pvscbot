@@ -49,7 +49,7 @@ async def classify_new_issue(event, gh, *args, **kwargs):
         # Teammate pre-classified the issue when creating it.
         return
     async for label in gh.getiter(issue["labels_url"]):
-        if label["name"] in labels.STATUS_LABELS:
+        if label["name"] in labels.STATUS_LABELS or label["name"] == labels.Team.data_science.value:
             # Issue already has a status label.
             return
     else:

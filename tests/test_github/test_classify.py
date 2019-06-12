@@ -88,6 +88,21 @@ async def test_new_issue_gains_status_label_while_processing():
     await classify.router.dispatch(event, gh)
     assert not gh.post_
 
+@pytest.mark.asyncio
+async def test_new_issue_gains_data_science_while_processing():
+    webhook_data = json.loads(
+        importlib_resources.read_text(samples, "issues-opened.json")
+    )
+    eventual_data = json.loads(
+        importlib_resources.read_text(samples, "issues-opened-data_science.json")
+    )
+    event = gidgethub.sansio.Event(webhook_data, event="issues", delivery_id="12345")
+    gh = FakeGH()
+    gh.getiter_response = eventual_data["issue"]["labels"]
+
+    await classify.router.dispatch(event, gh)
+    assert not gh.post_
+
 
 @pytest.mark.asyncio
 async def test_new_issue_gains_no_status_label_while_processing():
