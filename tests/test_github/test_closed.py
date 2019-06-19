@@ -8,7 +8,7 @@ import importlib_resources
 import pytest
 
 from . import samples
-from pvscbot.github import closed
+from __app__.github import closed
 
 
 class FakeGH:

@@ -1,5 +1,5 @@
-gidgethub
-aiohttp
+-r __app__/requirements.txt
+azure-functions
 # Development
 black
 importlib_resources

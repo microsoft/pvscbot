@@ -4,7 +4,7 @@
 import gidgethub.sansio
 import pytest
 
-from pvscbot.ghutils import ping
+from __app__.ghutils import ping
 
 
 class Logger:

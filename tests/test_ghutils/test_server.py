@@ -4,7 +4,7 @@
 import gidgethub.routing
 import pytest
 
-from pvscbot.ghutils import server
+from __app__.ghutils import server
 
 
 class Logger:
