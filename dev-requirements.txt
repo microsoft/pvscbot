@@ -7,6 +7,7 @@
 aiohttp==3.5.4
 appdirs==1.4.3            # via black
 async-timeout==3.0.1
+asynctest==0.13.0
 atomicwrites==1.3.0       # via pytest
 attrs==19.1.0
 azure-functions==1.0.0b4
