@@ -19,6 +19,16 @@ STATUS_LABELS = frozenset(e.value for e in Status.__members__.values())
 
 
 @enum.unique
+class Classification(enum.Enum):
+    epic = "Epic"
+    meta = "meta"
+    release_plan = "release plan"
+
+
+CLASSIFICATION_LABELS = frozenset(e.value for e in Classification.__members__.values())
+
+
+@enum.unique
 class Skip(enum.Enum):
     news = "skip news"
 

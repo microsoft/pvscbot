@@ -30,26 +30,25 @@ def has_labels(event):
     return event.data["issue"]["labels"]
 
 
+def classify_unneeded(labels_to_check):
+    """Determine if an existing label negates needing 'classify'."""
+    status_labels = set(labels.STATUS_LABELS) | labels.CLASSIFICATION_LABELS
+    status_labels.add(labels.Team.data_science.value)
+    return any(label in status_labels for label in labels_to_check)
+
+
 # Removing 'classify' from closed issues is taken care of in the 'closed' submodule.
 @router.register("issues", action="opened")
 @router.register("issues", action="reopened")
 async def classify_new_issue(event, gh, *args, **kwargs):
-    """Add the 'classify' label.
-
-    If any labels already exist then don't apply the label as that implies that
-    the issue has already been triaged.
-
-    """
+    """Add the 'classify' label."""
     issue = event.data["issue"]
     existing_labels = {label["name"] for label in issue["labels"]}
-    if (
-        existing_labels & labels.STATUS_LABELS
-        or labels.Team.data_science.value in existing_labels
-    ):
+    if classify_unneeded(existing_labels):
         # Teammate pre-classified the issue when creating it.
         return
     async for label in gh.getiter(issue["labels_url"]):
-        if label["name"] in labels.STATUS_LABELS or label["name"] == labels.Team.data_science.value:
+        if classify_unneeded({label["name"]}):
             # Issue already has a status label.
             return
     else:
@@ -64,10 +63,7 @@ async def added_label(event, gh, *args, **kwargs):
     elif added_label == labels.Status.classify.value:
         return
     elif has_classify(event):
-        if (
-            added_label in labels.STATUS_LABELS
-            or added_label == labels.Team.data_science.value
-        ):
+        if classify_unneeded({added_label}):
             try:
                 await gh.delete(
                     event.data["issue"]["labels_url"],
@@ -81,7 +77,7 @@ async def added_label(event, gh, *args, **kwargs):
 @router.register("issues", action="unlabeled")
 async def removed_label(event, gh, *args, **kwargs):
     remaining_labels = {label["name"] for label in event.data["issue"]["labels"]}
-    if not is_opened(event) or labels.Team.data_science.value in remaining_labels:
+    if not is_opened(event) or classify_unneeded(remaining_labels):
         return
     elif not (remaining_labels & labels.STATUS_LABELS):
         await add_classify_label(gh, event)
