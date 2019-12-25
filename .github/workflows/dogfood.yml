@@ -1,0 +1,13 @@
+name: "Dogfood"
+
+on:
+  issues:
+    types: ["opened", "edited", "closed", "reopened", "labeled", "unlabeled"]
+
+jobs:
+  pvscbot:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: microsoft/pvscbot@gh-action
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"

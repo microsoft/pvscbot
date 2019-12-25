@@ -1,0 +1,10 @@
+name: "pvscbot"
+description: "GitHub bot for Microsoft/vscode-python"
+
+inputs:
+    repo-token:
+        description: "Write-access token for the repo (e.g. `secrets.GITHUB_TOKEN`)"
+        required: true
+
+using: 'docker'
+image: 'Dockerfile'

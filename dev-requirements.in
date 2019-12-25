@@ -1,0 +1,6 @@
+-r requirements.txt
+black
+importlib_resources
+pip-tools
+pytest
+pytest-asyncio
