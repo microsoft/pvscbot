@@ -6,5 +6,6 @@ inputs:
         description: "Write-access token for the repo (e.g. `secrets.GITHUB_TOKEN`)"
         required: true
 
-using: 'docker'
-image: 'Dockerfile'
+runs:
+    using: 'docker'
+    image: 'Dockerfile'
