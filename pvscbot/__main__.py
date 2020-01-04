@@ -19,19 +19,17 @@ router = routing.Router(classify.router, closed.router, news.router)
 
 
 async def main():
-    print(sorted(os.environ.keys()))
     oauth_token = sys.argv[1]
+    webhook_event_name = os.environ["GITHUB_EVENT_NAME"]
+    webhook_path = os.environ["GITHUB_EVENT_PATH"]
+    with open(webhook_path, "r", encoding="utf-8") as file:
+        webhook_payload = json.load(file)
+    webhook_event = sansio.Event(
+        webhook_payload, event=webhook_event_name, delivery_id="<unknown>"
+    )
     repo = os.environ["GITHUB_REPOSITORY"]
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, repo, oauth_token=oauth_token)
-        webhook_event_name = os.environ["GITHUB_EVENT_NAME"]
-        print("Event name:", webhook_event_name)
-        webhook_path = os.environ["GITHUB_EVENT_PATH"]
-        with open(webhook_path, "r", encoding="utf-8") as file:
-            webhook_payload = json.load(file)
-        webhook_event = sansio.Event(
-            webhook_payload, event=webhook_event_name, delivery_id="<unknown>"
-        )
         await router.dispatch(webhook_event, gh, logger=logging)
 
 
