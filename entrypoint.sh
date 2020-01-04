@@ -1,4 +1,4 @@
 #!/bin/sh -l
 
-echo `pwd`
-echo `ls`
+cd /app
+python -m pvscbot

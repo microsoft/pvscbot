@@ -1,8 +1,9 @@
 FROM python:3.8
 
-COPY requirements.txt .
-RUN pip --disable-pip-version-check --no-cache-dir install -r requirements.txt
+COPY requirements.txt /app/
+RUN pip --disable-pip-version-check --no-cache-dir install -r /app/requirements.txt
 
-COPY pvscbot ./pvscbot/
-COPY entrypoint.sh /
-ENTRYPOINT ["/bin/sh", "-l", "/entrypoint.sh"]
+COPY pvscbot /app/pvscbot/
+
+COPY entrypoint.sh /app/
+ENTRYPOINT ["/bin/sh", "-l", "/app/entrypoint.sh"]
