@@ -7,4 +7,4 @@ COPY __main__.py /app
 COPY pvscbot /app/pvscbot/
 
 COPY entrypoint.sh /app/
-ENTRYPOINT ["python", "/app"]
+ENTRYPOINT ["/bin/sh", "-l", "/app/entrypoint.sh"]
