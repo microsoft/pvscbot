@@ -5,4 +5,4 @@ RUN pip --disable-pip-version-check --no-cache-dir install -r requirements.txt
 
 COPY pvscbot ./pvscbot/
 COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "-l", "/entrypoint.sh"]
