@@ -6,4 +6,4 @@ RUN pip --disable-pip-version-check --no-cache-dir install -r /app/requirements.
 COPY pvscbot /app/pvscbot/
 
 COPY entrypoint.sh /app/
-ENTRYPOINT ["/bin/sh", "-l", "/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
