@@ -4,5 +4,5 @@ COPY requirements.txt .
 RUN pip --disable-pip-version-check --no-cache-dir install -r requirements.txt
 
 COPY pvscbot ./pvscbot/
-#ENTRYPOINT ["python", "-m", "pvscbot"]
-ENTRYPOINT ["ls"]
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
