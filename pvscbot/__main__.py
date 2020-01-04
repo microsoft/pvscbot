@@ -20,7 +20,7 @@ router = routing.Router(classify.router, closed.router, news.router)
 
 async def main():
     print(sorted(os.environ.keys()))
-    oauth_token = os.environ["INPUT_REPO-TOKEN"]
+    oauth_token = sys.argv[1]
     repo = os.environ["GITHUB_REPOSITORY"]
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, repo, oauth_token=oauth_token)
