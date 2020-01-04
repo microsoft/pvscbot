@@ -9,5 +9,5 @@ inputs:
 runs:
     using: 'docker'
     image: 'Dockerfile'
-    args:
+    args:  # Inputs are **required** to be passed in via argv for a container action.
         - "${{ inputs.repo-token }}"
