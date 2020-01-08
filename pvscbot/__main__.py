@@ -19,7 +19,7 @@ router = routing.Router(classify.router, closed.router, news.router)
 
 
 async def main():
-    oauth_token = sys.argv[1]
+    oauth_token = os.environ.get("INPUT_REPO-TOKEN", sys.argv[1])
     webhook_event_name = os.environ["GITHUB_EVENT_NAME"]
     webhook_path = os.environ["GITHUB_EVENT_PATH"]
     with open(webhook_path, "r", encoding="utf-8") as file:
