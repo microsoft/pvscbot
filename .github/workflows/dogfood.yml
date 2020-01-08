@@ -10,6 +10,7 @@ jobs:
     steps:
     # docker://brettcannon/pvscbot:latest
     # microsoft/pvscbot@gh-action
-    - uses: microsoft/pvscbot@gh-action
+    - uses: docker://brettcannon/pvscbot:latest
       with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        #repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          args: ${{ secrets.GITHUB_TOKEN }}
