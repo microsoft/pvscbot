@@ -8,7 +8,8 @@ jobs:
   pvscbot:
     runs-on: ubuntu-latest
     steps:
+    # docker://brettcannon/pvscbot:latest
     # microsoft/pvscbot@gh-action
-    - uses: docker://brettcannon/pvscbot:latest
+    - uses: microsoft/pvscbot@gh-action
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
