@@ -8,6 +8,6 @@ jobs:
   pvscbot:
     runs-on: ubuntu-latest
     steps:
-    - uses: microsoft/pvscbot@gh-action
+    - uses: microsoft/pvscbot@v1.0.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
