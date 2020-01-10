@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": ".venv\\Scripts\\python.exe",
+  "python.pythonPath": "c:\\Users\\brcan\\Repositories\\microsoft\\pvscbot\\.venv\\Scripts\\python.exe",
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
   "python.jediEnabled": false,

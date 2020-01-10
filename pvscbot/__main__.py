@@ -2,50 +2,36 @@
 # Licensed under the MIT License.
 
 import asyncio
-import importlib
+import json
 import logging
 import os
 import sys
-import traceback
 
 import aiohttp
-from aiohttp import web
 from gidgethub import aiohttp as gh_aiohttp
 from gidgethub import routing
 from gidgethub import sansio
 
-from .ghutils import server
 from .github import classify, closed, news
 
 
 router = routing.Router(classify.router, closed.router, news.router)
 
 
-async def hello(_):
-    return web.Response(text="Hello, world")
-
-
-async def main(request):
-    try:
-        body = await request.read()
-        secret = os.environ.get("GH_SECRET")
-        oauth_token = os.environ.get("GH_AUTH")
-        async with aiohttp.ClientSession() as session:
-            gh = gh_aiohttp.GitHubAPI(
-                session, "Microsoft/pvscbot", oauth_token=oauth_token
-            )
-            await server.serve(
-                gh, router, request.headers, body, secret=secret, logger=logging
-            )
-        return web.Response(status=200)
-    except Exception:
-        logging.exception("Unhandled exception")
-        return web.Response(status=500)
+async def main():
+    oauth_token = os.environ.get("INPUT_REPO-TOKEN", sys.argv[1])
+    webhook_event_name = os.environ["GITHUB_EVENT_NAME"]
+    webhook_path = os.environ["GITHUB_EVENT_PATH"]
+    with open(webhook_path, "r", encoding="utf-8") as file:
+        webhook_payload = json.load(file)
+    webhook_event = sansio.Event(
+        webhook_payload, event=webhook_event_name, delivery_id="<unknown>"
+    )
+    repo = os.environ["GITHUB_REPOSITORY"]
+    async with aiohttp.ClientSession() as session:
+        gh = gh_aiohttp.GitHubAPI(session, repo, oauth_token=oauth_token)
+        await router.dispatch(webhook_event, gh, logger=logging)
 
 
 if __name__ == "__main__":
-    app = web.Application()
-    app.router.add_get("/", hello)
-    app.router.add_post("/github", main)
-    port = os.environ.get("PORT", 8000)
-    web.run_app(app, port=port)
+    asyncio.run(main())

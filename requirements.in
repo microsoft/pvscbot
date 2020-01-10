@@ -1,8 +1,2 @@
 gidgethub
 aiohttp
-# Development
-black
-importlib_resources
-pip-tools
-pytest
-pytest-asyncio

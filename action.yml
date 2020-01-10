@@ -1,0 +1,13 @@
+name: "pvscbot"
+description: "GitHub bot for Microsoft/vscode-python"
+
+inputs:
+    repo-token:
+        description: "Write-access token for the repo (e.g. `secrets.GITHUB_TOKEN`)"
+        required: true
+
+runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    args:  # Inputs are **required** to be passed in via argv for a container action.
+        - "${{ inputs.repo-token }}"
