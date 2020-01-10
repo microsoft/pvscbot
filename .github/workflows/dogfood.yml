@@ -2,7 +2,7 @@ name: "Dogfood"
 
 on:
   issues:
-    types: ["opened", "edited", "closed", "reopened", "labeled", "unlabeled"]
+    types: ["opened"]
 
 jobs:
   pvscbot:
