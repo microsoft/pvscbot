@@ -10,7 +10,7 @@ import importlib_resources
 import pytest
 
 from . import samples
-from pvscbot.github import classify, labels
+from __app__.github import classify, labels
 
 
 class FakeGH:
@@ -87,6 +87,7 @@ async def test_new_issue_gains_status_label_while_processing():
 
     await classify.router.dispatch(event, gh)
     assert not gh.post_
+
 
 @pytest.mark.asyncio
 async def test_new_issue_gains_data_science_while_processing():

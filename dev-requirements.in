@@ -1,4 +1,7 @@
--r requirements.txt
+-r __app__/requirements.txt
+azure-functions
+# Development
+asynctest
 black
 importlib_resources
 pip-tools

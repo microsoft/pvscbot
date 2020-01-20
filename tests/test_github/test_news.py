@@ -8,7 +8,7 @@ import importlib_resources
 import pytest
 
 
-from pvscbot.github import labels, news
+from __app__.github import labels, news
 from . import samples
 
 
