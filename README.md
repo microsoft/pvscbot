@@ -58,8 +58,8 @@ following events:
 ## Azure
 
 The bot is currently written to support
-[Azure App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-intro)
-on Python 3.7.
+[Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/)
+running on Python 3.7.
 
 
 # Contributing
