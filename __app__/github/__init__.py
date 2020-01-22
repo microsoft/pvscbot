@@ -29,9 +29,7 @@ async def main(req: func.HttpRequest) -> func.HttpResponse:
         gh = gh_aiohttp.GitHubAPI(
             CLIENT_SESSION, "Microsoft/pvscbot", oauth_token=oauth_token
         )
-        await server.serve(
-            gh, router, req.headers, body, secret=secret, logger=logging
-        )
+        await server.serve(gh, router, req.headers, body, secret=secret, logger=logging)
         return func.HttpResponse(status_code=200)
     except Exception:
         logging.exception("Unhandled exception")
