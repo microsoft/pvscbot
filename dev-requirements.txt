@@ -33,7 +33,7 @@ pytest==5.3.4
 six==1.12.0               # via packaging, pip-tools, pytest
 toml==0.10.0              # via black
 typing-extensions==3.7.2
-uritemplate==3.3.0
+uritemplate==3.0.1
 wcwidth==0.1.7            # via pytest
 yarl==1.3.0
 zipp==0.5.1               # via importlib-metadata
