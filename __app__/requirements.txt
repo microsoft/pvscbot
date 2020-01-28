@@ -4,11 +4,11 @@
 #
 #    pip-compile '.\requirements.in'
 #
-aiohttp==3.5.4
+aiohttp==3.6.2
 async-timeout==3.0.1      # via aiohttp
 attrs==19.1.0             # via aiohttp
 chardet==3.0.4            # via aiohttp
-gidgethub==3.1.0
+gidgethub==3.3.0
 idna-ssl==1.1.0           # via aiohttp
 idna==2.8                 # via idna-ssl, yarl
 multidict==4.5.2          # via aiohttp, yarl
