@@ -20,7 +20,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
     - run: python -m pip install -r dev-requirements.txt
-    - run: pytest
+    - run: python -m pytest --cov=__app__ --cov-fail-under=95 --cov-config=.coveragerc tests/
+    - uses: actions/upload-artifact@v1
+      with:
+        name: "coverage-report"
+        path: htmlcov
 
   formatting:
 
