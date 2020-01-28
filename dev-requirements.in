@@ -6,4 +6,5 @@ black
 importlib_resources
 pip-tools
 pytest
+pytest-cov
 pytest-asyncio
