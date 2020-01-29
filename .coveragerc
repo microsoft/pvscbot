@@ -1,2 +1,5 @@
 [run]
 branch = True
+
+[report]
+fail_under = 90
