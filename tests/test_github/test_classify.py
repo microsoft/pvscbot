@@ -183,6 +183,7 @@ async def test_removing_missing_classify_label():
     await classify.router.dispatch(event, gh)
     assert not gh.delete_
 
+
 @pytest.mark.asyncio
 async def test_removing_classify_label_error():
     sample_data = read_sample_data("issues-labeled-has_classify_adding_triage.json")
