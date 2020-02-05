@@ -4,6 +4,7 @@ azure-functions
 asynctest
 black
 importlib_resources
+mypy
 pip-tools
 pytest
 pytest-cov
