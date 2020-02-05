@@ -26,10 +26,6 @@ async def add_classify_label(gh, event):
     )
 
 
-def has_labels(event):
-    return event.data["issue"]["labels"]
-
-
 def classify_unneeded(labels_to_check):
     """Determine if an existing label negates needing 'classify'."""
     status_labels = set(labels.STATUS_LABELS) | labels.CLASSIFICATION_LABELS
@@ -57,6 +53,7 @@ async def classify_new_issue(event, gh, *args, **kwargs):
 
 @router.register("issues", action="labeled")
 async def added_label(event, gh, *args, **kwargs):
+    """Remove 'classify' if it is no longer required."""
     added_label = event.data["label"]["name"]
     if not is_opened(event):
         return
@@ -79,5 +76,5 @@ async def removed_label(event, gh, *args, **kwargs):
     remaining_labels = {label["name"] for label in event.data["issue"]["labels"]}
     if not is_opened(event) or classify_unneeded(remaining_labels):
         return
-    elif not (remaining_labels & labels.STATUS_LABELS):
+    else:
         await add_classify_label(gh, event)

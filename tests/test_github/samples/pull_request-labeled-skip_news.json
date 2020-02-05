@@ -86,6 +86,14 @@
         "requested_teams": [],
         "labels": [
             {
+                "id": 1019706345,
+                "node_id": "MDU6TGFiZWwxMDE5NzA2MzQ1",
+                "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/P2",
+                "name": "P2",
+                "color": "e564df",
+                "default": false
+            },
+            {
                 "id": 919755726,
                 "node_id": "MDU6TGFiZWw5MTk3NTU3MjY=",
                 "url": "https://api.github.com/repos/Microsoft/vscode-python/labels/skip%20news",

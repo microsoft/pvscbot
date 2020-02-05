@@ -16,6 +16,13 @@ class Logger:
 
 
 @pytest.mark.asyncio
+async def test_ping():
+    gh = object()
+    event = gidgethub.sansio.Event({}, event="ping", delivery_id="12345")
+    await ping.router.dispatch(event, gh)
+
+
+@pytest.mark.asyncio
 async def test_ping_logging():
     logger = Logger()
     gh = object()
