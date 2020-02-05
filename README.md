@@ -1,4 +1,4 @@
-![CI](https://github.com/microsoft/pvscbot/workflows/CI/badge.svg?event=push)
+[![CI](https://github.com/microsoft/pvscbot/workflows/CI/badge.svg?branch=master&event=push "CI status badge")](https://github.com/microsoft/pvscbot/actions?query=branch%3Amaster+event%3Apush+workflow%3ACI)
 
 # Purpose
 
