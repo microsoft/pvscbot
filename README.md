@@ -1,3 +1,5 @@
+![CI](https://github.com/microsoft/pvscbot/workflows/CI/badge.svg?event=push)
+
 # Purpose
 
 This bot exists to automate the development process/workflow for
