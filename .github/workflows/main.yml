@@ -58,3 +58,17 @@ jobs:
         python -m pip install -r dev-requirements.txt
     - run: mypy --config-file=mypy.ini __app__
     - run: black --check .
+
+
+  deploy:
+    if: github.event_name == "push" && github.ref == "master" && github.repository == "microsoft/pvscbot"
+    needs: [test, lint]
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: Azure/functions-action@v1
+        with:
+          app-name: "pvscbot-functions"
+          package: "__app__"
+          publish-prfile: ${{ secrets.SCM_CREDENTIALS }}
