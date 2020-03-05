@@ -72,4 +72,4 @@ jobs:
       with:
         app-name: pvscbot-functions
         package: __app__
-        publish-prfile: ${{ secrets.SCM_CREDENTIALS }}
+        publish-profile: ${{ secrets.SCM_CREDENTIALS }}
