@@ -62,7 +62,7 @@ jobs:
 
   deploy:
 
-    if: github.event_name == 'push' && github.repository == 'microsoft/pvscbot'
+    if: github.event_name == 'push' && github.repository == 'microsoft/pvscbot' && github.ref == 'refs/heads/master'
     needs: [test, lint]
     runs-on: [ubuntu-latest]
 
