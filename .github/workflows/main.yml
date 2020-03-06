@@ -65,11 +65,32 @@ jobs:
     if: github.event_name == 'push' && github.repository == 'microsoft/pvscbot' && github.ref == 'refs/heads/master'
     needs: [test, lint]
     runs-on: [ubuntu-latest]
+    env:
+      APP_LOCATION: __app__
+      PYTHON_VERSION: "3.7"
 
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('dev-requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: 'Run pip'
+      shell: bash
+      run: |
+        # If your function app project is not located in your repository's root
+        # Please change your directory for pip in pushd
+        pushd ${{ env.APP_LOCATION }}
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt --target=".python_packages/lib/python${{ env.PYTHON_VERSION }}/site-packages"
+        popd
     - uses: Azure/functions-action@v1
       with:
         app-name: pvscbot-functions
-        package: __app__
+        package: ${{ env.APP_LOCATION }}
         publish-profile: ${{ secrets.SCM_CREDENTIALS }}
