@@ -6,10 +6,13 @@ on:
     branches: 
       - master
 
+env:
+  LINUX_VERSION: "ubuntu-18.04"
+
 jobs:
   test:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.LINUX_VERSION }}
 
     steps:
     - uses: actions/checkout@v1
@@ -39,7 +42,7 @@ jobs:
 
   lint:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ env.LINUX_VERSION }}
 
     steps:
     - uses: actions/checkout@v1
@@ -64,7 +67,7 @@ jobs:
 
     if: github.event_name == 'push' && github.repository == 'microsoft/pvscbot' && github.ref == 'refs/heads/master'
     needs: [test, lint]
-    runs-on: [ubuntu-latest]
+    runs-on: ${{ env.LINUX_VERSION }}
     env:
       APP_LOCATION: __app__
       PYTHON_VERSION: "3.7"
