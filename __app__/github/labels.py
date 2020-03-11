@@ -8,10 +8,11 @@ import enum
 class Status(enum.Enum):
     classify = "classify"
     triage = "triage"
-    needs_decision = "needs decision"
-    needs_PR = "needs PR"
-    needs_spec = "needs spec"
     needs_upstream_fix = "needs upstream fix"
+    needs_decision = "needs decision"
+    needs_spike = "needs spike"
+    needs_spec = "needs spec"
+    needs_PR = "needs PR"
     experimenting = "experimenting"
 
 
