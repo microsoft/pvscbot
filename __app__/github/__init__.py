@@ -12,7 +12,7 @@ from ..ghutils import server
 from . import classify, closed
 
 
-router = routing.Router(classify.router, closed.router, news.router, ping.router)
+router = routing.Router(classify.router, closed.router, ping.router)
 
 CLIENT_SESSION = None
 
