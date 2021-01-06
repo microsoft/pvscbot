@@ -9,7 +9,7 @@ from gidgethub import routing
 
 from ..ghutils import ping
 from ..ghutils import server
-from . import classify, closed, news
+from . import classify, closed
 
 
 router = routing.Router(classify.router, closed.router, news.router, ping.router)

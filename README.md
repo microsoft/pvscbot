@@ -21,8 +21,6 @@ Currently the bot will do the following things for you:
 1. When an issue is closed, remove any status-related labels, e.g. `needs PR`
    (with the idea that if an issue is re-opened then it needs to be re-evaluated
    as to why the issue is still open).
-1. Require a pull request has a news file entry in `news` **or** have a `skip news`
-   label.
 
 # Deployment
 
@@ -63,10 +61,9 @@ The bot is currently written to support
 [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/)
 running on Python 3.7.
 
-
 # Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
