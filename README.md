@@ -53,7 +53,6 @@ need to specify what events to send to your endpoint. This bot supports the
 following events:
 
 1. `Issues`
-1. `Pull Requests`
 
 ## Azure
 
